@@ -14,6 +14,9 @@
   "require": {
     "php": ">=5.5"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
+  },
   "autoload": {
     "psr-4": {
       "PSX\\OpenSsl\\": "src/"
