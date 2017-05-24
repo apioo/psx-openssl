@@ -9,6 +9,11 @@
       "name": "Christoph Kappestein",
       "email": "christoph.kappestein@gmail.com",
       "homepage": "http://christoph.kappestein.com/"
+    },
+    {
+      "name": "Kage",
+      "email": "kage@hackthissite.org",
+      "homepage": "https://www.hackthissite.org/"
     }
   ],
   "require": {
