@@ -20,6 +20,7 @@
 
 namespace PSX\OpenSsl\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\OpenSsl\OpenSsl;
 use PSX\OpenSsl\PKey;
 
@@ -30,7 +31,7 @@ use PSX\OpenSsl\PKey;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class OpenSslTest extends \PHPUnit_Framework_TestCase
+class OpenSslTest extends TestCase
 {
     protected function setUp()
     {
