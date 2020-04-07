@@ -21,6 +21,7 @@
 namespace PSX\OpenSsl;
 
 use InvalidArgumentException;
+use ErrorHandleTrait;
 
 /**
  * PKey
@@ -31,7 +32,6 @@ use InvalidArgumentException;
  */
 class PKey
 {
-    use ErrorHandleTrait;
 
     protected $res;
 

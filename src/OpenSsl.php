@@ -20,6 +20,8 @@
 
 namespace PSX\OpenSsl;
 
+use ErrorHandleTrait;
+
 /**
  * OpenSsl
  *
@@ -29,7 +31,6 @@ namespace PSX\OpenSsl;
  */
 class OpenSsl
 {
-    use ErrorHandleTrait;
 
     public static function decrypt($data, $method, $password, $rawInput = false, $iv = '')
     {
