@@ -33,7 +33,7 @@ use PSX\OpenSsl\PKey;
  */
 class OpenSslTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!function_exists('openssl_pkey_new')) {
             $this->markTestSkipped('Openssl extension not installed');
