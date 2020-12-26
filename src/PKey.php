@@ -46,7 +46,7 @@ class PKey
         } elseif (is_resource($configargs)) {
             $this->res = $configargs;
         } else {
-            throw new InvalidArgumentException('Must be either an array or a resource');
+            throw new InvalidArgumentException('Must be either an array or a resource, got ' . gettype($configargs));
         }
     }
 
