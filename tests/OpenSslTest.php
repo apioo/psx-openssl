@@ -81,7 +81,6 @@ class OpenSslTest extends TestCase
 
         /** @var PKey\DH $details */
         $details = $clientKey->getDetails();
-
         $this->assertInstanceOf(PKey\DH::class, $details);
         $clientPublicKey = $details->getPubKey();
 
@@ -101,7 +100,6 @@ class OpenSslTest extends TestCase
 
         /** @var PKey\DH $details */
         $details = $serverKey->getDetails();
-
         $this->assertInstanceOf(PKey\DH::class, $details);
         $serverPublicKey = $details->getPubKey();
 
@@ -238,38 +236,7 @@ class OpenSslTest extends TestCase
 
     protected function getKey()
     {
-        $privateKey = <<<TEXT
------BEGIN RSA PRIVATE KEY-----
-Proc-Type: 4,ENCRYPTED
-DEK-Info: DES-EDE3-CBC,AA056EDD41D3832C
-
-fhMA8lDIGNiwdczPT8YZDCnDV6M8+mmpLCEOOVzLt68ecGJoNk0BADhN3BgXsmXe
-pKkWdfVLco5FVwMJaFx21Kh9EmZWu9yRDJ1GMSn9HwPYdjm2v9lvPPoz2ELtqz9C
-MjqLt7bU/YVKhy/bPVGoQPzO36Esj6qVhlQX7DhkCIf8ZrG8rYJFszn3B/9TaJ8/
-CGf85F8tJ20/DOh+WQZI0wB53Plvpq/YX7JbTEgQV3YlCv4UZrCYl5TEBffv3CLL
-Z+KBJ3u50LAWpouBY0Ljw+h0VeOODynq6dNzT/C60PwazZFqFzPijkTu021cTosc
-7LwWL5hoOhcYDBI9SCS3PbRAqDWGwRR98SBzDg9I2MK59AgAuul+cSTKqCbgSZi1
-VdL+uzmM6n5hnzn5gDF5pLNOjlp/Omwb6m49gmJ0LtdQCXqFPmafHW5QsAIPdVzT
-veZuoE2NsQXnEpkqaq/lZlF8n+4I5ES8QlQByfEubRAtz2jaAJMB570CIVbtgt3r
-PNLYJ0kV1uHAhNxuvfSIoIsFuHEgz+QXzDB4qync0JTomiNaVvRDjJzYwWe+CYmg
-rnUEO3CnjigrCzVnI4HzJn9uWwzJ3y1ayHV914BM+gjaMRfFCA5Am0e5ci+7cnU+
-CRTn3xyYESJdMy8ot7wiScI0NOSM8p4ph01OrZWWz8UxZNgDgorh9/2l9U0ugcfW
-6BSmVPYWgtl4Yhh3umw2fP9/EIkULFNx/XSKzWkFbpvqAbnv80qZbl46Di94U8rj
-P2CvWELxGmAIxoZ75XLIGoEoAN9mphs/Q1fUaawt7cRGuheH3usG7d/5a9EtL/GZ
-Jvoqv3GdFtv0SHWxrHkArFTxqONwciu91NrGbUa2vFz2+bAS+egVRHVL5CdNzW5T
-kVuneyHLqi/zvYrvpBN81ZV78ouWZzS7mYf/JwiUpkTpEFDSvGzy+ojYV5PPwmPV
-esgz6lNUnPmCDDfwhgobYMIRT7mWXESBZKCqT2Nk4SvDaSSEfAhc44zKMFvGjznO
-jnXuSM9PVh2G9ht0Ma+SaXmctKB5Zs4ym9cgFV1xWSYzUxpOuKc8ICdZAG8yuOL7
-spUrwrYn1VHK+o11QOBHVnMsT4UUULTDfn2mTy5hrJDlDsSYOjZ8y72siB33b0zB
-pmP6xYUm5NAtzmE0nPsCbyb+quTsTtbRIrdnGhCKXMRqZdEo+86M+eEGB8itRyE0
-t5fscBw74mYagVOK2a8146B21LxcqCVkgheUaBBft1A629Ak9+Z8afpGXZ016tbV
-zbDgV4LuEHuqW/HX/hyIHSBzh8sa96jpIvkFu3naxddDe0X4RZVO1CdDUyUUJg4P
-5XgkAC+mmNLIcOvcbcfoZ5bnIyNv+ZaJgcU1Juh7LM/b9hYvuYSqYqsURFGzv2x9
-lXSA/M7YcS8vXaNVfqINhZn9LFM9mQQ152cdMA1bmoUBeFvy8cMx86IPbOlql49S
-tBc/hOSY90sjSkTIrX6V0GcHBp50z9j2pnSz66q4opo9/vPIXU4CDiC73OuQudZz
-0CxBi7jJ0PeTN2CaDCYJJ7xG0ut7kGxXS0C9PFpzy+YLLRoNc0hdHnJMidyc1sgA
------END RSA PRIVATE KEY-----
-TEXT;
+        $privateKey = file_get_contents(__DIR__ . '/private.pem');
 
         return PKey::getPrivate($privateKey, 'foobar');
     }

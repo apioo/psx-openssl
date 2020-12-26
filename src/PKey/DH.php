@@ -102,10 +102,10 @@ class DH extends TypeAbstract
         return new self(
             $details['bits'] ?? '',
             $details['key'] ?? '',
-            $details['p'] ?? '',
-            $details['g'] ?? '',
-            $details['priv_key'] ?? '',
-            $details['pub_key'] ?? '',
+            $details['dh']['p'] ?? '',
+            $details['dh']['g'] ?? '',
+            $details['dh']['priv_key'] ?? '',
+            $details['dh']['pub_key'] ?? '',
         );
     }
 }

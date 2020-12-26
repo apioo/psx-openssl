@@ -118,11 +118,11 @@ class DSA extends TypeAbstract
         return new self(
             $details['bits'] ?? '',
             $details['key'] ?? '',
-            $details['p'] ?? '',
-            $details['q'] ?? '',
-            $details['g'] ?? '',
-            $details['priv_key'] ?? '',
-            $details['pub_key'] ?? '',
+            $details['rsa']['p'] ?? '',
+            $details['rsa']['q'] ?? '',
+            $details['rsa']['g'] ?? '',
+            $details['rsa']['priv_key'] ?? '',
+            $details['rsa']['pub_key'] ?? '',
         );
     }
 }

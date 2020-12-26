@@ -117,11 +117,11 @@ class EC extends TypeAbstract
         return new self(
             $details['bits'] ?? '',
             $details['key'] ?? '',
-            $details['curve_name'] ?? '',
-            $details['curve_oid'] ?? '',
-            $details['x'] ?? '',
-            $details['y'] ?? '',
-            $details['d'] ?? ''
+            $details['ec']['curve_name'] ?? '',
+            $details['ec']['curve_oid'] ?? '',
+            $details['ec']['x'] ?? '',
+            $details['ec']['y'] ?? '',
+            $details['ec']['d'] ?? ''
         );
     }
 }

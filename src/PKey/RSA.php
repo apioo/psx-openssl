@@ -162,14 +162,14 @@ class RSA extends TypeAbstract
         return new self(
             $details['bits'] ?? '',
             $details['key'] ?? '',
-            $details['n'] ?? '',
-            $details['e'] ?? '',
-            $details['d'] ?? '',
-            $details['p'] ?? '',
-            $details['q'] ?? '',
-            $details['dmp1'] ?? '',
-            $details['dmq1'] ?? '',
-            $details['iqmp'] ?? '',
+            $details['rsa']['n'] ?? '',
+            $details['rsa']['e'] ?? '',
+            $details['rsa']['d'] ?? '',
+            $details['rsa']['p'] ?? '',
+            $details['rsa']['q'] ?? '',
+            $details['rsa']['dmp1'] ?? '',
+            $details['rsa']['dmq1'] ?? '',
+            $details['rsa']['iqmp'] ?? '',
         );
     }
 }
