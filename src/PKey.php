@@ -49,7 +49,7 @@ class PKey
             self::handleReturn($res);
 
             $this->res = $res;
-        } elseif (is_resource($configargs)) {
+        } elseif (is_resource($configargs) || is_object($configargs)) {
             $this->res = $configargs;
         } else {
             throw new InvalidArgumentException('Must be either an array or a resource, got ' . gettype($configargs));
