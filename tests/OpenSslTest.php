@@ -21,6 +21,7 @@
 namespace PSX\OpenSsl\Tests;
 
 use PHPUnit\Framework\TestCase;
+use PSX\OpenSsl\Exception;
 use PSX\OpenSsl\OpenSsl;
 use PSX\OpenSsl\PKey;
 
@@ -152,11 +153,10 @@ class OpenSslTest extends TestCase
         $this->assertEquals($data, $opened);
     }
 
-    /**
-     * @expectedException \PSX\OpenSsl\Exception
-     */
     public function testSealInvalidPubKeyType()
     {
+        $this->expectException(Exception::class);
+
         $data = 'Some content';
 
         OpenSsl::seal($data, $sealed, $ekeys, array('foo'));
@@ -172,7 +172,7 @@ class OpenSslTest extends TestCase
 
         $result = OpenSsl::verify($data, $signature, $pkey);
 
-        $this->assertEquals('ldkl10vQQX+CMcfcu2qv8GaTDL58DBWqu13Snk5N5caG02KcoHDkfjyDeRM75GMmvjpxYEtf23R/wmYCeljdyOJPPolPdyAFqatkrMqHOd3VPFcLZpRMzb6bZAY4q+aUejxMRIqXFdc3TN6msb/PYrk3pJg0W9Svi9In8Hvil9U=', base64_encode($signature));
+        $this->assertEquals('S9zEMrH5RTYkC/iUiHCbDUP9MkrsivkN23QffRuTD7bMiWn5neP4QX+36zO3ynELWUSyQ6woqNO37y6KQK1t6Nk3Etkau9IplBFga8ZDBcfMIMdJmWKXWmWzycgAorxjglFkdUSer8vc1tvf4v05msufJKwg/E853ZVZuB//vb/idxBH/GPeguGw8jm3DVEn3tpmypJMd/pzBwAzWB7USG8TsSDyXhxPt8pO3ZGCJn3IPbXo6eMMx+7ad/6yyxxHwu60Ab2F5hOIiC0UR15OLH5X7plJFWPTobi95GrVfHHHNRli1zquTt5T8cu+v3Q6W1ZOeSPqF7o7pn2nUjantQ==', base64_encode($signature));
         $this->assertEquals(1, $result);
 
         $data = 'Some content corrupted';

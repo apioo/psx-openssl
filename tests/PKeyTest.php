@@ -21,6 +21,7 @@
 namespace PSX\OpenSsl\Tests;
 
 use PHPUnit\Framework\TestCase;
+use PSX\OpenSsl\Exception;
 use PSX\OpenSsl\PKey;
 
 /**
@@ -76,7 +77,7 @@ TEXT;
 
         $pkey = PKey::getPrivate($privateKey, 'foobar');
 
-        $this->assertInstanceOf('PSX\OpenSsl\PKey', $pkey);
+        $this->assertInstanceOf(PKey::class, $pkey);
 
         $publicKey = $pkey->getPublicKey();
 
@@ -85,11 +86,10 @@ TEXT;
         $this->assertEquals('-----BEGIN PUBLIC KEY-----', substr($publicKey, 0, 26));
     }
 
-    /**
-     * @expectedException \PSX\OpenSsl\Exception
-     */
     public function testGetPrivateInvalidPassword()
     {
+        $this->expectException(Exception::class);
+
         $privateKey = <<<TEXT
 -----BEGIN RSA PRIVATE KEY-----
 Proc-Type: 4,ENCRYPTED
@@ -111,14 +111,13 @@ NLdCEZh1YcQ9pIu2wHisIe8QgRmdMtR0LyenlwrgOK1cHh5Xhye9oGRb0vYOb3vb
 -----END RSA PRIVATE KEY-----
 TEXT;
 
-        $pkey = PKey::getPrivate($privateKey, 'foo');
+        PKey::getPrivate($privateKey, 'foo');
     }
 
-    /**
-     * @expectedException \PSX\OpenSsl\Exception
-     */
     public function testGetPrivateInvalidFormat()
     {
+        $this->expectException(Exception::class);
+
         $privateKey = <<<TEXT
 -----BEGIN RSA PRIVATE KEY-----
 Proc-Type: 4,ENCRYPTED
@@ -139,7 +138,7 @@ NLdCEZh1YcQ9pIu2wHisIe8QgRmdMtR0LyenlwrgOK1cHh5Xhye9oGRb0vYOb3vb
 -----END RSA PRIVATE KEY-----
 TEXT;
 
-        $pkey = PKey::getPrivate($privateKey, 'foobar');
+        PKey::getPrivate($privateKey, 'foobar');
     }
 
     public function testGetPublic()
@@ -155,7 +154,7 @@ TEXT;
 
         $pkey = PKey::getPublic($publicKey);
 
-        $this->assertInstanceOf('PSX\OpenSsl\PKey', $pkey);
+        $this->assertInstanceOf(PKey::class, $pkey);
 
         $publicKey = $pkey->getPublicKey();
 
@@ -164,11 +163,10 @@ TEXT;
         $this->assertEquals('-----BEGIN PUBLIC KEY-----', substr($publicKey, 0, 26));
     }
 
-    /**
-     * @expectedException \PSX\OpenSsl\Exception
-     */
     public function testGetPublicInvalidFormat()
     {
+        $this->expectException(Exception::class);
+
         $publicKey = <<<TEXT
 -----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDK5CRsyemwJ0Pf09ww0UYaeqUr
@@ -177,6 +175,6 @@ ZOqvOq7faORkrJPT1QIDAQAB
 -----END PUBLIC KEY-----
 TEXT;
 
-        $pkey = PKey::getPublic($publicKey);
+        PKey::getPublic($publicKey);
     }
 }
