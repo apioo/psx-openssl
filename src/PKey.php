@@ -33,8 +33,14 @@ class PKey
 {
     use ErrorHandleTrait;
 
-    protected $res;
+    /**
+     * @var resource
+     */
+    private $res;
 
+    /**
+     * @param array $configargs
+     */
     public function __construct($configargs = array())
     {
         if (is_array($configargs)) {
@@ -50,32 +56,67 @@ class PKey
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function free()
     {
+        if (PHP_MAJOR_VERSION >= 8) {
+            // deprecated in PHP 8
+            return;
+        }
+
         openssl_pkey_free($this->res);
     }
 
-    public function getDetails()
+    /**
+     * @return PKey\TypeAbstract
+     * @throws Exception
+     */
+    public function getDetails(): PKey\TypeAbstract
     {
         $details = openssl_pkey_get_details($this->res);
 
         self::handleReturn($details);
 
-        return $details;
+        $type = $details['type'] ?? null;
+        if ($type === OPENSSL_KEYTYPE_RSA) {
+            return PKey\RSA::fromArray($details);
+        } elseif ($type === OPENSSL_KEYTYPE_DSA) {
+            return PKey\DSA::fromArray($details);
+        } elseif ($type === OPENSSL_KEYTYPE_DH) {
+            return PKey\DH::fromArray($details);
+        } elseif ($type === OPENSSL_KEYTYPE_EC) {
+            return PKey\EC::fromArray($details);
+        } else {
+            throw new Exception('Unknown key type');
+        }
     }
 
+    /**
+     * @return string
+     * @throws Exception
+     */
     public function getPublicKey()
     {
-        $details = $this->getDetails();
-
-        return isset($details['key']) ? $details['key'] : null;
+        return $this->getDetails()->getKey();
     }
 
+    /**
+     * @internal 
+     * @return resource
+     */
     public function getResource()
     {
         return $this->res;
     }
 
+    /**
+     * @param $out
+     * @param string|null $passphrase
+     * @param array $configargs
+     * @return bool
+     */
     public function export(&$out, $passphrase = null, array $configargs = array())
     {
         $result = openssl_pkey_export($this->res, $out, $passphrase, $configargs);
@@ -85,6 +126,11 @@ class PKey
         return $result;
     }
 
+    /**
+     * @param string $key
+     * @param string|null $passphrase
+     * @return PKey
+     */
     public static function getPrivate($key, $passphrase = null)
     {
         $res = openssl_pkey_get_private($key, $passphrase);
@@ -94,6 +140,10 @@ class PKey
         return new self($res);
     }
 
+    /**
+     * @param string $certificate
+     * @return PKey
+     */
     public static function getPublic($certificate)
     {
         $res = openssl_pkey_get_public($certificate);

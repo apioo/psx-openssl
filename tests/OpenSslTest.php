@@ -79,8 +79,11 @@ class OpenSslTest extends TestCase
             )
         ));
 
-        $details         = $clientKey->getDetails();
-        $clientPublicKey = $details['dh']['pub_key'];
+        /** @var PKey\DH $details */
+        $details = $clientKey->getDetails();
+
+        $this->assertInstanceOf(PKey\DH::class, $details);
+        $clientPublicKey = $details->getPubKey();
 
         // the server receives the public key of the client
 
@@ -96,8 +99,11 @@ class OpenSslTest extends TestCase
             )
         ));
 
-        $details         = $serverKey->getDetails();
-        $serverPublicKey = $details['dh']['pub_key'];
+        /** @var PKey\DH $details */
+        $details = $serverKey->getDetails();
+
+        $this->assertInstanceOf(PKey\DH::class, $details);
+        $serverPublicKey = $details->getPubKey();
 
         // the server generates the dh key
         $dhKey  = OpenSsl::dhComputeKey($clientPublicKey, $serverKey);
@@ -159,7 +165,7 @@ class OpenSslTest extends TestCase
 
         $data = 'Some content';
 
-        OpenSsl::seal($data, $sealed, $ekeys, array('foo'));
+        OpenSsl::seal($data, $sealed, $ekeys, ['foo']);
     }
 
     public function testSignVerify()

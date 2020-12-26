@@ -91,12 +91,20 @@ class OpenSsl
         return $return;
     }
 
+    /**
+     * @param $data
+     * @param $sealedData
+     * @param $envKeys
+     * @param PKey[] $pubKeys
+     * @return false|int
+     * @throws Exception
+     */
     public static function seal($data, &$sealedData, &$envKeys, array $pubKeys)
     {
         $pubKeyIds = array();
         foreach ($pubKeys as $pubKey) {
             if ($pubKey instanceof PKey) {
-                $pubKeyIds[] = $pubKey->getPublicKey();
+                $pubKeyIds[] = $pubKey->getResource();
             } else {
                 throw new Exception('Pub keys must be an array containing PSX\OpenSsl\PKey instances');
             }
@@ -120,7 +128,7 @@ class OpenSsl
 
     public static function verify($data, $signature, PKey $key, $signatureAlg = OPENSSL_ALGO_SHA1)
     {
-        $return = openssl_verify($data, $signature, $key->getPublicKey(), $signatureAlg);
+        $return = openssl_verify($data, $signature, $key->getResource(), $signatureAlg);
 
         self::handleReturn($return);
 
@@ -147,7 +155,7 @@ class OpenSsl
 
     public static function publicDecrypt($data, &$decrypted, PKey $key, $padding = OPENSSL_PKCS1_PADDING)
     {
-        $return = openssl_public_decrypt($data, $decrypted, $key->getPublicKey(), $padding);
+        $return = openssl_public_decrypt($data, $decrypted, $key->getResource(), $padding);
 
         self::handleReturn($return);
 
@@ -156,7 +164,7 @@ class OpenSsl
 
     public static function publicEncrypt($data, &$crypted, PKey $key, $padding = OPENSSL_PKCS1_PADDING)
     {
-        $return = openssl_public_encrypt($data, $crypted, $key->getPublicKey(), $padding);
+        $return = openssl_public_encrypt($data, $crypted, $key->getResource(), $padding);
 
         self::handleReturn($return);
 
