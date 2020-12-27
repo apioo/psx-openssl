@@ -41,7 +41,7 @@ class PKey
     /**
      * @param array $configargs
      */
-    public function __construct($configargs = array())
+    public function __construct($configargs = [])
     {
         if (is_array($configargs)) {
             $res = openssl_pkey_new($configargs);
@@ -59,7 +59,7 @@ class PKey
     /**
      * @deprecated
      */
-    public function free()
+    public function free(): void
     {
         if (PHP_MAJOR_VERSION >= 8) {
             // deprecated in PHP 8
@@ -97,7 +97,7 @@ class PKey
      * @return string
      * @throws Exception
      */
-    public function getPublicKey()
+    public function getPublicKey(): string
     {
         return $this->getDetails()->getKey();
     }
@@ -112,18 +112,14 @@ class PKey
     }
 
     /**
-     * @param $out
+     * @param string|null $out
      * @param string|null $passphrase
      * @param array $configargs
      * @return bool
      */
-    public function export(&$out, $passphrase = null, array $configargs = array())
+    public function export(?string &$out, ?string $passphrase = null, array $configargs = array()): bool
     {
-        $result = openssl_pkey_export($this->res, $out, $passphrase, $configargs);
-
-        self::handleReturn($result);
-
-        return $result;
+        return self::handleReturn(openssl_pkey_export($this->res, $out, $passphrase, $configargs));
     }
 
     /**
@@ -131,25 +127,17 @@ class PKey
      * @param string|null $passphrase
      * @return PKey
      */
-    public static function getPrivate($key, $passphrase = null)
+    public static function getPrivate(string $key, ?string $passphrase = null): self
     {
-        $res = openssl_pkey_get_private($key, $passphrase);
-
-        self::handleReturn($res);
-
-        return new self($res);
+        return new self(self::handleReturn(openssl_pkey_get_private($key, $passphrase)));
     }
 
     /**
-     * @param string $certificate
+     * @param string|resource $certificate
      * @return PKey
      */
-    public static function getPublic($certificate)
+    public static function getPublic($certificate): self
     {
-        $res = openssl_pkey_get_public($certificate);
-
-        self::handleReturn($res);
-
-        return new self($res);
+        return new self(self::handleReturn(openssl_pkey_get_public($certificate)));
     }
 }
