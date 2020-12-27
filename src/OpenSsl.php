@@ -96,10 +96,11 @@ class OpenSsl
      * @param $sealedData
      * @param $envKeys
      * @param PKey[] $pubKeys
+     * @param $method
      * @return false|int
      * @throws Exception
      */
-    public static function seal($data, &$sealedData, &$envKeys, array $pubKeys)
+    public static function seal($data, &$sealedData, &$envKeys, array $pubKeys, ?string $method = null)
     {
         $pubKeyIds = array();
         foreach ($pubKeys as $pubKey) {
@@ -110,7 +111,7 @@ class OpenSsl
             }
         }
 
-        $return = openssl_seal($data, $sealedData, $envKeys, $pubKeyIds);
+        $return = openssl_seal($data, $sealedData, $envKeys, $pubKeyIds, $method);
 
         self::handleReturn($return);
 
