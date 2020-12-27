@@ -29,6 +29,11 @@ namespace PSX\OpenSsl;
  */
 trait ErrorHandleTrait
 {
+    /**
+     * @param mixed $return
+     * @return mixed
+     * @throws Exception
+     */
     protected static function handleReturn($return)
     {
         if ($return === false) {
@@ -36,6 +41,8 @@ trait ErrorHandleTrait
         } else {
             self::clearErrorStack();
         }
+
+        return $return;
     }
 
     protected static function assertErrorStack()
