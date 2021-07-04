@@ -59,7 +59,7 @@ class PKey
     /**
      * @deprecated
      */
-    public function free(): void
+    public function free()
     {
         if (PHP_MAJOR_VERSION >= 8) {
             // deprecated in PHP 8
