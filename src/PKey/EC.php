@@ -115,7 +115,7 @@ class EC extends TypeAbstract
     public static function fromArray(array $details): self
     {
         return new self(
-            $details['bits'] ?? '',
+            $details['bits'] ?? 0,
             $details['key'] ?? '',
             $details['ec']['curve_name'] ?? '',
             $details['ec']['curve_oid'] ?? '',

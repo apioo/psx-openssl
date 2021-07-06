@@ -160,7 +160,7 @@ class RSA extends TypeAbstract
     public static function fromArray(array $details): self
     {
         return new self(
-            $details['bits'] ?? '',
+            $details['bits'] ?? 0,
             $details['key'] ?? '',
             $details['rsa']['n'] ?? '',
             $details['rsa']['e'] ?? '',
