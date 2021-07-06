@@ -73,7 +73,7 @@ class OpenSsl
 
     public static function getCurveNames(): array
     {
-        return openssl_get_curve_names();
+        return openssl_get_curve_names() ?: [];
     }
 
     public static function getMdMethods(bool $aliases = false): array
