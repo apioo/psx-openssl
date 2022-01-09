@@ -1,9 +1,9 @@
 <?php
 /*
- * PSX is a open source PHP framework to develop RESTful APIs.
- * For the current version and informations visit <http://phpsx.org>
+ * PSX is an open source PHP framework to develop RESTful APIs.
+ * For the current version and information visit <https://phpsx.org>
  *
- * Copyright 2010-2016 Christoph Kappestein <k42b3.x@gmail.com>
+ * Copyright 2010-2022 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,9 @@ use PSX\OpenSsl\PKey;
 /**
  * OpenSslTest
  *
- * @author  Christoph Kappestein <k42b3.x@gmail.com>
+ * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @link    http://phpsx.org
+ * @link    https://phpsx.org
  */
 class OpenSslTest extends TestCase
 {
@@ -145,8 +145,6 @@ class OpenSslTest extends TestCase
 
         OpenSsl::open(base64_decode($sealed), $opened, base64_decode($envKey), $key);
 
-        $key->free();
-
         $this->assertEquals($data, $opened);
     }
 
@@ -177,8 +175,6 @@ class OpenSslTest extends TestCase
         $result = OpenSsl::verify($data, $signature, $pkey);
 
         $this->assertEquals(0, $result);
-
-        $pkey->free();
     }
 
     public function testPublicEncryptPrivateDecrypt()
