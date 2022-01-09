@@ -29,56 +29,15 @@ namespace PSX\OpenSsl\PKey;
  */
 class RSA extends TypeAbstract
 {
-    /**
-     * @var string
-     */
-    private $n;
+    private string $n;
+    private string $e;
+    private string $d;
+    private string $p;
+    private string $q;
+    private string $dmp1;
+    private string $dmq1;
+    private string $iqmp;
 
-    /**
-     * @var string
-     */
-    private $e;
-
-    /**
-     * @var string
-     */
-    private $d;
-
-    /**
-     * @var string
-     */
-    private $p;
-
-    /**
-     * @var string
-     */
-    private $q;
-
-    /**
-     * @var string
-     */
-    private $dmp1;
-
-    /**
-     * @var string
-     */
-    private $dmq1;
-
-    /**
-     * @var string
-     */
-    private $iqmp;
-
-    /**
-     * @param string $n
-     * @param string $e
-     * @param string $d
-     * @param string $p
-     * @param string $q
-     * @param string $dmp1
-     * @param string $dmq1
-     * @param string $iqmp
-     */
     public function __construct(int $bits, string $key, string $n, string $e, string $d, string $p, string $q, string $dmp1, string $dmq1, string $iqmp)
     {
         parent::__construct($bits, $key);
@@ -93,65 +52,41 @@ class RSA extends TypeAbstract
         $this->iqmp = $iqmp;
     }
 
-    /**
-     * @return string
-     */
     public function getN(): string
     {
         return $this->n;
     }
 
-    /**
-     * @return string
-     */
     public function getE(): string
     {
         return $this->e;
     }
 
-    /**
-     * @return string
-     */
     public function getD(): string
     {
         return $this->d;
     }
 
-    /**
-     * @return string
-     */
     public function getP(): string
     {
         return $this->p;
     }
 
-    /**
-     * @return string
-     */
     public function getQ(): string
     {
         return $this->q;
     }
 
-    /**
-     * @return string
-     */
     public function getDmp1(): string
     {
         return $this->dmp1;
     }
 
-    /**
-     * @return string
-     */
     public function getDmq1(): string
     {
         return $this->dmq1;
     }
 
-    /**
-     * @return string
-     */
     public function getIqmp(): string
     {
         return $this->iqmp;

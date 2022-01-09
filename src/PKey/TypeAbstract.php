@@ -29,37 +29,20 @@ namespace PSX\OpenSsl\PKey;
  */
 abstract class TypeAbstract
 {
-    /**
-     * @var int
-     */
-    private $bits;
+    private int $bits;
+    private string $key;
 
-    /**
-     * @var string
-     */
-    private $key;
-
-    /**
-     * @param int $bits
-     * @param string $key
-     */
     public function __construct(int $bits, string $key)
     {
         $this->bits = $bits;
         $this->key = $key;
     }
 
-    /**
-     * @return int
-     */
     public function getBits(): int
     {
         return $this->bits;
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;

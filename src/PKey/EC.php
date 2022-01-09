@@ -29,38 +29,12 @@ namespace PSX\OpenSsl\PKey;
  */
 class EC extends TypeAbstract
 {
-    /**
-     * @var string
-     */
-    private $curveName;
+    private string $curveName;
+    private string $curveOid;
+    private string $x;
+    private string $y;
+    private string $d;
 
-    /**
-     * @var string
-     */
-    private $curveOid;
-
-    /**
-     * @var string
-     */
-    private $x;
-
-    /**
-     * @var string
-     */
-    private $y;
-
-    /**
-     * @var string
-     */
-    private $d;
-
-    /**
-     * @param string $curveName
-     * @param string $curveOid
-     * @param string $x
-     * @param string $y
-     * @param string $d
-     */
     public function __construct(int $bits, string $key, string $curveName, string $curveOid, string $x, string $y, string $d)
     {
         parent::__construct($bits, $key);
@@ -72,41 +46,26 @@ class EC extends TypeAbstract
         $this->d = $d;
     }
 
-    /**
-     * @return string
-     */
     public function getCurveName(): string
     {
         return $this->curveName;
     }
 
-    /**
-     * @return string
-     */
     public function getCurveOid(): string
     {
         return $this->curveOid;
     }
 
-    /**
-     * @return string
-     */
     public function getX(): string
     {
         return $this->x;
     }
 
-    /**
-     * @return string
-     */
     public function getY(): string
     {
         return $this->y;
     }
 
-    /**
-     * @return string
-     */
     public function getD(): string
     {
         return $this->d;

@@ -29,39 +29,12 @@ namespace PSX\OpenSsl\PKey;
  */
 class DSA extends TypeAbstract
 {
-    /**
-     * @var string
-     */
-    private $p;
+    private string $p;
+    private string $q;
+    private string $g;
+    private string $privKey;
+    private string $pubKey;
 
-    /**
-     * @var string
-     */
-    private $q;
-
-    /**
-     * @var string
-     */
-    private $g;
-
-    /**
-     * @var string
-     */
-    private $privKey;
-
-    /**
-     * @var string
-     */
-    private $pubKey;
-
-
-    /**
-     * @param string $p
-     * @param string $q
-     * @param string $g
-     * @param string $privKey
-     * @param string $pubKey
-     */
     public function __construct(int $bits, string $key, string $p, string $q, string $g, string $privKey, string $pubKey)
     {
         parent::__construct($bits, $key);
@@ -73,41 +46,26 @@ class DSA extends TypeAbstract
         $this->pubKey = $pubKey;
     }
 
-    /**
-     * @return string
-     */
     public function getP(): string
     {
         return $this->p;
     }
 
-    /**
-     * @return string
-     */
     public function getQ(): string
     {
         return $this->q;
     }
 
-    /**
-     * @return string
-     */
     public function getG(): string
     {
         return $this->g;
     }
 
-    /**
-     * @return string
-     */
     public function getPrivKey(): string
     {
         return $this->privKey;
     }
 
-    /**
-     * @return string
-     */
     public function getPubKey(): string
     {
         return $this->pubKey;
