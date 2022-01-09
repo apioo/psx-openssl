@@ -154,7 +154,7 @@ class OpenSsl
         $pubKeyIds = array();
         foreach ($pubKeys as $pubKey) {
             if ($pubKey instanceof PKey) {
-                $pubKeyIds[] = $pubKey->getPublicKey();
+                $pubKeyIds[] = $pubKey->getResource();
             } else {
                 throw new OpenSslException('Pub keys must be an array containing PSX\OpenSsl\PKey instances');
             }
