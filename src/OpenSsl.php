@@ -20,6 +20,8 @@
 
 namespace PSX\OpenSsl;
 
+use PSX\OpenSsl\Exception\OpenSslException;
+
 /**
  * OpenSsl
  *
@@ -31,27 +33,39 @@ class OpenSsl
 {
     use ErrorHandleTrait;
 
+    /**
+     * @throws OpenSslException
+     */
     public static function decrypt(string $data, string $method, string $password, int $options = 1, string $iv = ''): string
     {
-        return self::handleReturn(openssl_decrypt($data, $method, $password, $options, $iv));
+        return self::throwExceptionOnFalse(openssl_decrypt($data, $method, $password, $options, $iv));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function dhComputeKey(string $pubKey, PKey $dhKey): string
     {
-        return self::handleReturn(openssl_dh_compute_key($pubKey, $dhKey->getResource()));
+        return self::throwExceptionOnFalse(openssl_dh_compute_key($pubKey, $dhKey->getResource()));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function digest(string $data, string $func, bool $rawOutput = false): string
     {
-        return self::handleReturn(openssl_digest($data, $func, $rawOutput));
+        return self::throwExceptionOnFalse(openssl_digest($data, $func, $rawOutput));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function encrypt(string $data, string $method, string $password, int $options = 0, string $iv = ''): string
     {
-        return self::handleReturn(openssl_encrypt($data, $method, $password, $options, $iv));
+        return self::throwExceptionOnFalse(openssl_encrypt($data, $method, $password, $options, $iv));
     }
 
-    public static function errorString()
+    public static function errorString(): string|false
     {
         return openssl_error_string();
     }
@@ -61,9 +75,12 @@ class OpenSsl
         return openssl_get_cert_locations();
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function getCipherIvLength(string $method): int
     {
-        return self::handleReturn(openssl_cipher_iv_length($method));
+        return self::throwExceptionOnFalse(openssl_cipher_iv_length($method));
     }
 
     public static function getCipherMethods(bool $aliases = false): array
@@ -81,36 +98,57 @@ class OpenSsl
         return openssl_get_md_methods($aliases);
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'RC4', string $iv = ''): bool
     {
-        return self::handleReturn(openssl_open($sealedData, $openData, $envKey, $key->getResource(), $method, $iv));
+        return self::throwExceptionOnFalse(openssl_open($sealedData, $openData, $envKey, $key->getResource(), $method, $iv));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function privateDecrypt(string $data, ?string &$decrypted, PKey $key, int $padding = OPENSSL_PKCS1_PADDING): bool
     {
-        return self::handleReturn(openssl_private_decrypt($data, $decrypted, $key->getResource(), $padding));
+        return self::throwExceptionOnFalse(openssl_private_decrypt($data, $decrypted, $key->getResource(), $padding));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function privateEncrypt(string $data, ?string &$crypted, PKey $key, int $padding = OPENSSL_PKCS1_PADDING): bool
     {
-        return self::handleReturn(openssl_private_encrypt($data, $crypted, $key->getResource(), $padding));
+        return self::throwExceptionOnFalse(openssl_private_encrypt($data, $crypted, $key->getResource(), $padding));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function publicDecrypt(string $data, ?string &$decrypted, PKey $key, int $padding = OPENSSL_PKCS1_PADDING): bool
     {
-        return self::handleReturn(openssl_public_decrypt($data, $decrypted, $key->getPublicKey(), $padding));
+        return self::throwExceptionOnFalse(openssl_public_decrypt($data, $decrypted, $key->getPublicKey(), $padding));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function publicEncrypt(string $data, ?string &$crypted, PKey $key, int $padding = OPENSSL_PKCS1_PADDING): bool
     {
-        return self::handleReturn(openssl_public_encrypt($data, $crypted, $key->getPublicKey(), $padding));
+        return self::throwExceptionOnFalse(openssl_public_encrypt($data, $crypted, $key->getPublicKey(), $padding));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function randomPseudoBytes(int $length): string
     {
-        return self::handleReturn(openssl_random_pseudo_bytes($length));
+        return self::throwExceptionOnFalse(openssl_random_pseudo_bytes($length));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method = 'RC4', string $iv = ''): int
     {
         $pubKeyIds = array();
@@ -118,18 +156,24 @@ class OpenSsl
             if ($pubKey instanceof PKey) {
                 $pubKeyIds[] = $pubKey->getPublicKey();
             } else {
-                throw new Exception('Pub keys must be an array containing PSX\OpenSsl\PKey instances');
+                throw new OpenSslException('Pub keys must be an array containing PSX\OpenSsl\PKey instances');
             }
         }
 
-        return self::handleReturn(openssl_seal($data, $sealedData, $envKeys, $pubKeyIds, $method, $iv));
+        return self::throwExceptionOnFalse(openssl_seal($data, $sealedData, $envKeys, $pubKeyIds, $method, $iv));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function sign(string $data, ?string &$signature, PKey $key, int $signatureAlg = OPENSSL_ALGO_SHA1): bool
     {
-        return self::handleReturn(openssl_sign($data, $signature, $key->getResource(), $signatureAlg));
+        return self::throwExceptionOnFalse(openssl_sign($data, $signature, $key->getResource(), $signatureAlg));
     }
 
+    /**
+     * @throws OpenSslException
+     */
     public static function verify(string $data, string $signature, PKey $key, int $signatureAlg = OPENSSL_ALGO_SHA1): int
     {
         return openssl_verify($data, $signature, $key->getPublicKey(), $signatureAlg);

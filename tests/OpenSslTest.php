@@ -21,7 +21,7 @@
 namespace PSX\OpenSsl\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PSX\OpenSsl\Exception;
+use PSX\OpenSsl\Exception\OpenSslException;
 use PSX\OpenSsl\OpenSsl;
 use PSX\OpenSsl\PKey;
 
@@ -152,7 +152,7 @@ class OpenSslTest extends TestCase
 
     public function testSealInvalidPubKeyType()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(OpenSslException::class);
 
         $data = 'Some content';
 

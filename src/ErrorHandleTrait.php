@@ -20,6 +20,8 @@
 
 namespace PSX\OpenSsl;
 
+use PSX\OpenSsl\Exception\OpenSslException;
+
 /**
  * ErrorHandleTrait
  *
@@ -30,11 +32,9 @@ namespace PSX\OpenSsl;
 trait ErrorHandleTrait
 {
     /**
-     * @param mixed $return
-     * @return mixed
-     * @throws Exception
+     * @throws OpenSslException
      */
-    protected static function handleReturn($return)
+    protected static function throwExceptionOnFalse(mixed $return): mixed
     {
         if ($return === false) {
             self::assertErrorStack();
@@ -45,7 +45,10 @@ trait ErrorHandleTrait
         return $return;
     }
 
-    protected static function assertErrorStack()
+    /**
+     * @throws OpenSslException
+     */
+    protected static function assertErrorStack(): void
     {
         $message = array();
         while ($msg = openssl_error_string()) {
@@ -53,13 +56,13 @@ trait ErrorHandleTrait
         }
 
         if (!empty($message)) {
-            throw new Exception(implode(', ', $message));
+            throw new OpenSslException(implode(', ', $message));
         } else {
-            throw new Exception('An unknown error occurred');
+            throw new OpenSslException('An unknown error occurred');
         }
     }
 
-    protected static function clearErrorStack()
+    protected static function clearErrorStack(): void
     {
         while ($msg = openssl_error_string()) {
         }

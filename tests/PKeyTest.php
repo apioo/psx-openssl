@@ -21,7 +21,7 @@
 namespace PSX\OpenSsl\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PSX\OpenSsl\Exception;
+use PSX\OpenSsl\Exception\OpenSslException;
 use PSX\OpenSsl\PKey;
 
 /**
@@ -40,8 +40,6 @@ class PKeyTest extends TestCase
 
         $publicKey = $pkey->getPublicKey();
 
-        $pkey->free();
-
         $this->assertEquals('-----BEGIN PUBLIC KEY-----', substr($publicKey, 0, 26));
     }
 
@@ -55,14 +53,12 @@ class PKeyTest extends TestCase
 
         $publicKey = $pkey->getPublicKey();
 
-        $pkey->free();
-
         $this->assertEquals('-----BEGIN PUBLIC KEY-----', substr($publicKey, 0, 26));
     }
 
     public function testGetPrivateInvalidPassword()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(OpenSslException::class);
 
         $privateKey = file_get_contents(__DIR__ . '/private.pem');
 
@@ -71,7 +67,7 @@ class PKeyTest extends TestCase
 
     public function testGetPrivateInvalidFormat()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(OpenSslException::class);
 
         $privateKey = <<<TEXT
 -----BEGIN RSA PRIVATE KEY-----
@@ -92,14 +88,12 @@ TEXT;
 
         $publicKey = $pkey->getPublicKey();
 
-        $pkey->free();
-
         $this->assertEquals('-----BEGIN PUBLIC KEY-----', substr($publicKey, 0, 26));
     }
 
     public function testGetPublicInvalidFormat()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(OpenSslException::class);
 
         $publicKey = <<<TEXT
 -----BEGIN PUBLIC KEY-----

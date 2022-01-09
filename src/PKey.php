@@ -21,6 +21,7 @@
 namespace PSX\OpenSsl;
 
 use InvalidArgumentException;
+use PSX\OpenSsl\Exception\OpenSslException;
 
 /**
  * PKey
@@ -33,51 +34,33 @@ class PKey
 {
     use ErrorHandleTrait;
 
-    /**
-     * @var resource
-     */
-    private $res;
+    private \OpenSSLAsymmetricKey $key;
 
     /**
-     * @param array $configargs
+     * @throws OpenSslException
      */
-    public function __construct($configargs = [])
+    public function __construct(array|\OpenSSLAsymmetricKey $options = [])
     {
-        if (is_array($configargs)) {
-            $res = openssl_pkey_new($configargs);
+        if (is_array($options)) {
+            $key = openssl_pkey_new($options);
 
-            self::handleReturn($res);
+            self::throwExceptionOnFalse($key);
 
-            $this->res = $res;
-        } elseif (is_resource($configargs) || is_object($configargs)) {
-            $this->res = $configargs;
+            $this->key = $key;
         } else {
-            throw new InvalidArgumentException('Must be either an array or a resource, got ' . gettype($configargs));
+            $this->key = $options;
         }
-    }
-
-    /**
-     * @deprecated
-     */
-    public function free()
-    {
-        if (PHP_MAJOR_VERSION >= 8) {
-            // deprecated in PHP 8
-            return;
-        }
-
-        openssl_pkey_free($this->res);
     }
 
     /**
      * @return PKey\TypeAbstract
-     * @throws Exception
+     * @throws OpenSslException
      */
     public function getDetails(): PKey\TypeAbstract
     {
-        $details = openssl_pkey_get_details($this->res);
+        $details = openssl_pkey_get_details($this->key);
 
-        self::handleReturn($details);
+        self::throwExceptionOnFalse($details);
 
         $type = $details['type'] ?? null;
         if ($type === OPENSSL_KEYTYPE_RSA) {
@@ -89,13 +72,12 @@ class PKey
         } elseif ($type === OPENSSL_KEYTYPE_EC) {
             return PKey\EC::fromArray($details);
         } else {
-            throw new Exception('Unknown key type');
+            throw new OpenSslException('Unknown key type');
         }
     }
 
     /**
-     * @return string
-     * @throws Exception
+     * @throws OpenSslException
      */
     public function getPublicKey(): string
     {
@@ -104,40 +86,33 @@ class PKey
 
     /**
      * @internal 
-     * @return resource
      */
-    public function getResource()
+    public function getResource(): \OpenSSLAsymmetricKey
     {
-        return $this->res;
+        return $this->key;
     }
 
     /**
-     * @param string|null $out
-     * @param string|null $passphrase
-     * @param array $configargs
-     * @return bool
+     * @throws OpenSslException
      */
     public function export(?string &$out, ?string $passphrase = null, array $configargs = array()): bool
     {
-        return self::handleReturn(openssl_pkey_export($this->res, $out, $passphrase, $configargs));
+        return self::throwExceptionOnFalse(openssl_pkey_export($this->key, $out, $passphrase, $configargs));
     }
 
     /**
-     * @param string $key
-     * @param string|null $passphrase
-     * @return PKey
+     * @throws OpenSslException
      */
     public static function getPrivate(string $key, ?string $passphrase = null): self
     {
-        return new self(self::handleReturn(openssl_pkey_get_private($key, $passphrase)));
+        return new self(self::throwExceptionOnFalse(openssl_pkey_get_private($key, $passphrase)));
     }
 
     /**
-     * @param string|resource $certificate
-     * @return PKey
+     * @throws OpenSslException
      */
-    public static function getPublic($certificate): self
+    public static function getPublic(mixed $certificate): self
     {
-        return new self(self::handleReturn(openssl_pkey_get_public($certificate)));
+        return new self(self::throwExceptionOnFalse(openssl_pkey_get_public($certificate)));
     }
 }
