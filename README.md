@@ -8,7 +8,6 @@ case an error occurred.
 
 ## Usage
 
-
 ### Encrypt/Decrypt
 
 ```php
@@ -33,7 +32,7 @@ $this->assertEquals($data, $decrypt);
 ```php
 <?php
 
-$pkey = PKey::getPrivate('private.pem', 'foobar');
+$pkey = PKey::newPrivate('private.pem', 'foobar');
 $data = 'Some content';
 
 OpenSsl::sign($data, $signature, $pkey);
