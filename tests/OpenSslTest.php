@@ -224,6 +224,6 @@ class OpenSslTest extends TestCase
     {
         $privateKey = file_get_contents(__DIR__ . '/private.pem');
 
-        return PKey::getPrivate($privateKey, 'foobar');
+        return PKey::newPrivate($privateKey, 'foobar');
     }
 }

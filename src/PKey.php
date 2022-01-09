@@ -84,6 +84,14 @@ class PKey
     }
 
     /**
+     * @throws OpenSslException
+     */
+    public function getPublic(): self
+    {
+        return self::newPublic($this->getPublicKey());
+    }
+
+    /**
      * @internal 
      */
     public function getResource(): \OpenSSLAsymmetricKey
@@ -102,16 +110,16 @@ class PKey
     /**
      * @throws OpenSslException
      */
-    public static function getPrivate(string $key, ?string $passphrase = null): self
+    public static function newPrivate(string $privateKey, ?string $passphrase = null): self
     {
-        return new self(self::throwExceptionOnFalse(openssl_pkey_get_private($key, $passphrase)));
+        return new self(self::throwExceptionOnFalse(openssl_pkey_get_private($privateKey, $passphrase)));
     }
 
     /**
      * @throws OpenSslException
      */
-    public static function getPublic(mixed $certificate): self
+    public static function newPublic(mixed $publicKey): self
     {
-        return new self(self::throwExceptionOnFalse(openssl_pkey_get_public($certificate)));
+        return new self(self::throwExceptionOnFalse(openssl_pkey_get_public($publicKey)));
     }
 }

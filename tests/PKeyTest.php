@@ -47,7 +47,7 @@ class PKeyTest extends TestCase
     {
         $privateKey = file_get_contents(__DIR__ . '/private.pem');
 
-        $pkey = PKey::getPrivate($privateKey, 'foobar');
+        $pkey = PKey::newPrivate($privateKey, 'foobar');
 
         $this->assertInstanceOf(PKey::class, $pkey);
 
@@ -62,7 +62,7 @@ class PKeyTest extends TestCase
 
         $privateKey = file_get_contents(__DIR__ . '/private.pem');
 
-        PKey::getPrivate($privateKey, 'foo');
+        PKey::newPrivate($privateKey, 'foo');
     }
 
     public function testGetPrivateInvalidFormat()
@@ -75,14 +75,14 @@ foobar
 -----END RSA PRIVATE KEY-----
 TEXT;
 
-        PKey::getPrivate($privateKey, 'foobar');
+        PKey::newPrivate($privateKey, 'foobar');
     }
 
     public function testGetPublic()
     {
         $publicKey = file_get_contents(__DIR__ . '/public.pem');
 
-        $pkey = PKey::getPublic($publicKey);
+        $pkey = PKey::newPublic($publicKey);
 
         $this->assertInstanceOf(PKey::class, $pkey);
 
@@ -101,6 +101,6 @@ foobar
 -----END PUBLIC KEY-----
 TEXT;
 
-        PKey::getPublic($publicKey);
+        PKey::newPublic($publicKey);
     }
 }
