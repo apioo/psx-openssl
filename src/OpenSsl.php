@@ -101,7 +101,7 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'aes-128-cbc', ?string $iv = null): bool
+    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method, string $iv): bool
     {
         return self::throwExceptionOnFalse(openssl_open($sealedData, $openData, $envKey, $key->getResource(), $method, $iv));
     }
@@ -149,7 +149,7 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method = 'aes-128-cbc', ?string $iv = null): int
+    public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method, string $iv): int
     {
         $pubKeyIds = array();
         foreach ($pubKeys as $pubKey) {

@@ -36,10 +36,10 @@ class OpenSslTest extends TestCase
 {
     public function testEncryptDecrypt()
     {
-        $data   = 'Secret text';
-        $key    = 'foobar';
+        $data = 'Secret text';
+        $key = 'foobar';
         $method = 'aes-128-cbc';
-        $iv     = substr(md5('foo'), 4, 16);
+        $iv = substr(md5('foo'), 4, 16);
 
         $encrypt = OpenSsl::encrypt($data, $method, $key, 0, $iv);
 
@@ -59,18 +59,18 @@ class OpenSslTest extends TestCase
     public function testDhComputeKey()
     {
         // both parties must know these parameters
-        $p      = pack('H*', 'dcf93a0b883972ec0e19989ac5a2ce310e1d37717e8d9571bb7623731866e61ef75a2e27898b057f9891c2e27a639c3f29b60814581cd3b2ca3986d2683705577d45c2e7e52dc81c7a171876e5cea74b1448bfdfaf18828efd2519f14e45e3826634af1949e5b535cc829a483b8a76223e5d490a257f05bdff16f2fb22c583ab');
-        $g      = pack('H*', '02');
+        $p = pack('H*', 'dcf93a0b883972ec0e19989ac5a2ce310e1d37717e8d9571bb7623731866e61ef75a2e27898b057f9891c2e27a639c3f29b60814581cd3b2ca3986d2683705577d45c2e7e52dc81c7a171876e5cea74b1448bfdfaf18828efd2519f14e45e3826634af1949e5b535cc829a483b8a76223e5d490a257f05bdff16f2fb22c583ab');
+        $g = pack('H*', '02');
         $dhFunc = 'SHA256';
 
         // the client generates a new key
-        $clientKey = new PKey(array(
+        $clientKey = new PKey([
             'private_key_type' => OPENSSL_KEYTYPE_DH,
-            'dh' => array(
+            'dh' => [
                 'p' => $p,
                 'g' => $g,
-            )
-        ));
+            ]
+        ]);
 
         /** @var PKey\DH $details */
         $details = $clientKey->getDetails();
@@ -83,13 +83,13 @@ class OpenSslTest extends TestCase
         $secret = OpenSsl::randomPseudoBytes(32);
 
         // the server creates a new key
-        $serverKey = new PKey(array(
+        $serverKey = new PKey([
             'private_key_type' => OPENSSL_KEYTYPE_DH,
-            'dh' => array(
+            'dh' => [
                 'p' => $p,
                 'g' => $g,
-            )
-        ));
+            ]
+        ]);
 
         /** @var PKey\DH $details */
         $details = $serverKey->getDetails();
@@ -97,12 +97,12 @@ class OpenSslTest extends TestCase
         $serverPublicKey = $details->getPubKey();
 
         // the server generates the dh key
-        $dhKey  = OpenSsl::dhComputeKey($clientPublicKey, $serverKey);
+        $dhKey = OpenSsl::dhComputeKey($clientPublicKey, $serverKey);
         $digest = OpenSsl::digest($dhKey, $dhFunc, true);
         $macKey = $digest ^ $secret;
 
         // the client receives the public key and mac key of the server
-        $dhKey  = OpenSsl::dhComputeKey($serverPublicKey, $clientKey);
+        $dhKey = OpenSsl::dhComputeKey($serverPublicKey, $clientKey);
         $digest = OpenSsl::digest($dhKey, $dhFunc, true);
         $result = $digest ^ $macKey;
 
@@ -130,17 +130,18 @@ class OpenSslTest extends TestCase
     public function testOpenSeal()
     {
         $data = 'Some content';
+        $method = 'aes-128-cbc';
         $iv = substr(md5('foo'), 4, 16);
 
         $key = $this->getKey();
         $key->export($privateKey, 'foobar');
 
-        OpenSsl::seal($data, $sealed, $ekeys, [$key], iv: $iv);
+        OpenSsl::seal($data, $sealed, $ekeys, [$key], $method, $iv);
 
         $sealed = base64_encode($sealed);
         $envKey = base64_encode($ekeys[0]);
 
-        OpenSsl::open(base64_decode($sealed), $opened, base64_decode($envKey), $key, iv: $iv);
+        OpenSsl::open(base64_decode($sealed), $opened, base64_decode($envKey), $key, $method, $iv);
 
         $this->assertEquals($data, $opened);
     }
@@ -150,8 +151,10 @@ class OpenSslTest extends TestCase
         $this->expectException(OpenSslException::class);
 
         $data = 'Some content';
+        $method = 'aes-128-cbc';
+        $iv = substr(md5('foo'), 4, 16);
 
-        OpenSsl::seal($data, $sealed, $ekeys, ['foo']);
+        OpenSsl::seal($data, $sealed, $ekeys, ['foo'], $method, $iv);
     }
 
     public function testSignVerify()
