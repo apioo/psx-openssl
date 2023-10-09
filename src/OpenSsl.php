@@ -101,8 +101,12 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'AES256', string $iv = ''): bool
+    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'AES256', ?string $iv = null): bool
     {
+        if ($iv === null) {
+            $iv = openssl_random_pseudo_bytes(32);
+        }
+
         return self::throwExceptionOnFalse(openssl_open($sealedData, $openData, $envKey, $key->getResource(), $method, $iv));
     }
 
