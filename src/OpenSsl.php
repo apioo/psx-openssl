@@ -161,7 +161,7 @@ class OpenSsl
         }
 
         if ($iv === null) {
-            $iv = openssl_random_pseudo_bytes(64);
+            $iv = openssl_random_pseudo_bytes(32);
         }
 
         return self::throwExceptionOnFalse(openssl_seal($data, $sealedData, $envKeys, $pubKeyIds, $method, $iv));
@@ -180,6 +180,6 @@ class OpenSsl
      */
     public static function verify(string $data, string $signature, PKey $key, int $signatureAlg = OPENSSL_ALGO_SHA1): int
     {
-        return openssl_verify($data, $signature, $key->getPublicKey(), $signatureAlg);
+        return self::throwExceptionOnFalse(openssl_verify($data, $signature, $key->getPublicKey(), $signatureAlg));
     }
 }
