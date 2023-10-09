@@ -101,7 +101,7 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'AES256', ?string $iv = null): bool
+    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'aes-128-cbc', ?string $iv = null): bool
     {
         if ($iv === null) {
             $iv = openssl_random_pseudo_bytes(32);
@@ -153,7 +153,7 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method = 'AES256', ?string $iv = null): int
+    public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method = 'aes-128-cbc', ?string $iv = null): int
     {
         $pubKeyIds = array();
         foreach ($pubKeys as $pubKey) {
