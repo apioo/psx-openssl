@@ -104,7 +104,7 @@ class OpenSsl
     public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'aes-128-cbc', ?string $iv = null): bool
     {
         if ($iv === null) {
-            $iv = openssl_random_pseudo_bytes(32);
+            $iv = openssl_random_pseudo_bytes(16);
         }
 
         return self::throwExceptionOnFalse(openssl_open($sealedData, $openData, $envKey, $key->getResource(), $method, $iv));
@@ -165,7 +165,7 @@ class OpenSsl
         }
 
         if ($iv === null) {
-            $iv = openssl_random_pseudo_bytes(32);
+            $iv = openssl_random_pseudo_bytes(16);
         }
 
         return self::throwExceptionOnFalse(openssl_seal($data, $sealedData, $envKeys, $pubKeyIds, $method, $iv));
