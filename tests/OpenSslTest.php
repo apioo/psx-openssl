@@ -130,16 +130,17 @@ class OpenSslTest extends TestCase
     public function testOpenSeal()
     {
         $data = 'Some content';
+        $iv = substr(md5('foo'), 4, 16);
 
         $key = $this->getKey();
         $key->export($privateKey, 'foobar');
 
-        OpenSsl::seal($data, $sealed, $ekeys, [$key]);
+        OpenSsl::seal($data, $sealed, $ekeys, [$key], iv: $iv);
 
         $sealed = base64_encode($sealed);
         $envKey = base64_encode($ekeys[0]);
 
-        OpenSsl::open(base64_decode($sealed), $opened, base64_decode($envKey), $key);
+        OpenSsl::open(base64_decode($sealed), $opened, base64_decode($envKey), $key, iv: $iv);
 
         $this->assertEquals($data, $opened);
     }
