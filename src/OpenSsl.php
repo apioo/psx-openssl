@@ -101,7 +101,7 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'RC4', string $iv = ''): bool
+    public static function open(string $sealedData, ?string &$openData, string $envKey, PKey $key, string $method = 'AES256', string $iv = ''): bool
     {
         return self::throwExceptionOnFalse(openssl_open($sealedData, $openData, $envKey, $key->getResource(), $method, $iv));
     }
@@ -149,7 +149,7 @@ class OpenSsl
     /**
      * @throws OpenSslException
      */
-    public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method = 'RC4', string $iv = ''): int
+    public static function seal(string $data, ?string &$sealedData, ?array &$envKeys, array $pubKeys, string $method = 'AES256', ?string $iv = null): int
     {
         $pubKeyIds = array();
         foreach ($pubKeys as $pubKey) {
@@ -158,6 +158,10 @@ class OpenSsl
             } else {
                 throw new OpenSslException('Pub keys must be an array containing PSX\OpenSsl\PKey instances');
             }
+        }
+
+        if ($iv === null) {
+            $iv = openssl_random_pseudo_bytes(64);
         }
 
         return self::throwExceptionOnFalse(openssl_seal($data, $sealedData, $envKeys, $pubKeyIds, $method, $iv));

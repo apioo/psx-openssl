@@ -124,7 +124,6 @@ class OpenSslTest extends TestCase
     {
         $methods = OpenSsl::getCipherMethods();
 
-        $this->assertTrue(is_array($methods));
         $this->assertTrue(count($methods) > 0);
     }
 
