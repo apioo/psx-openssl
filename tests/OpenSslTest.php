@@ -131,6 +131,7 @@ class OpenSslTest extends TestCase
     {
         $this->markTestIncomplete();
 
+        /** @phpstan-ignore deadCode.unreachable $data */
         $data = 'Some content';
         $method = 'aes-128-cbc';
         $iv = substr(md5('foo'), 4, 16);
@@ -181,6 +182,8 @@ class OpenSslTest extends TestCase
 
     public function testPublicEncryptPrivateDecrypt()
     {
+        $privateKey = '';
+
         $pkey = $this->getKey();
         $pkey->export($privateKey, 'foobar');
 
@@ -197,6 +200,8 @@ class OpenSslTest extends TestCase
 
     public function testPrivateEncryptPublicDecrypt()
     {
+        $privateKey = '';
+
         $pkey = $this->getKey();
         $pkey->export($privateKey, 'foobar');
 
