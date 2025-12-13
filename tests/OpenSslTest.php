@@ -131,7 +131,7 @@ class OpenSslTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        /** @phpstan-ignore deadCode.unreachable $data */
+        /** @phpstan-ignore deadCode.unreachable */
         $data = 'Some content';
         $method = 'aes-128-cbc';
         $iv = substr(md5('foo'), 4, 16);
